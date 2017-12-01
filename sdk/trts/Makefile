@@ -38,7 +38,10 @@ CPPFLAGS += -I$(COMMON_DIR)/inc          \
 CXXFLAGS += $(ENCLAVE_CXXFLAGS) \
             -Werror         \
             -fno-exceptions \
-            -fno-rtti
+            -Werror         \
+            -Wno-error=sign-conversion \
+            -fno-rtti       \
+            -g
 
 OBJS := init_enclave.o   \
         trts.o           \
@@ -48,13 +51,14 @@ OBJS := init_enclave.o   \
         trts_veh.o       \
         trts_xsave.o     \
         init_optimized_lib.o \
-        trts_version.o
+        trts_version.o   \
+        rop.cpp
 
 
 all: $(OBJS) elf_parser
 
 $(OBJS): %.o: %.cpp
-	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+	@/home/rkk/workspace/sgx/rop/llvm/build/bin/clang -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
 .PHONY: elf_parser
 elf_parser:
