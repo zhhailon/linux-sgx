@@ -52,13 +52,13 @@ OBJS := init_enclave.o   \
         trts_xsave.o     \
         init_optimized_lib.o \
         trts_version.o   \
-        rop.cpp
+        rop.o
 
 
 all: $(OBJS) elf_parser
 
 $(OBJS): %.o: %.cpp
-	@/home/rkk/workspace/sgx/rop/llvm/build/bin/clang -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+	@../../../build/bin/clang -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
 .PHONY: elf_parser
 elf_parser:
